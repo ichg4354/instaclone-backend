@@ -1,4 +1,7 @@
+import { PrismaClient } from "@prisma/client";
 import { ApolloServer, gql } from "apollo-server";
+
+const client = new PrismaClient();
 
 const typeDefs = gql`
   type Query {
@@ -10,14 +13,18 @@ const typeDefs = gql`
     deleteMovie(title: String!): Boolean
   }
   type Movie {
-    title: String
-    year: String
+    id: Int!
+    title: String!
+    year: String!
+    createdAt: String!
+    updatedAt: String!
+    genre: String
   }
 `;
 
 const resolvers = {
   Query: {
-    movies: () => [],
+    movies: () => client.movie.findMany(),
     movie: () => ({ title: "this is title", year: "this is year" }),
   },
   Mutation: {
