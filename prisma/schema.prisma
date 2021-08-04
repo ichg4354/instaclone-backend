@@ -12,6 +12,6 @@ model Movie {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   title     String
-  year      Int
+  year      Int?
   genre     String?
 }
