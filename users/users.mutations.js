@@ -1,4 +1,5 @@
 import { client } from "../client";
+import bcrypt from "bcrypt";
 
 export default {
   Mutation: {
@@ -11,9 +12,16 @@ export default {
           OR: [{ username: username }, { firstname: firstname }],
         },
       });
-      console.log(searchedUser);
-      // check if firstname and username is taken
-      // hash password
+      const uglyPassword = await bcrypt.hash(password, 10);
+      return client.user.create({
+        data: {
+          firstname,
+          lastname,
+          username,
+          email,
+          password: uglyPassword,
+        },
+      });
       // return selected profile
     },
   },
