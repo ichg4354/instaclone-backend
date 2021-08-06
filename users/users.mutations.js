@@ -7,21 +7,28 @@ export default {
       _,
       { firstname, lastname, username, email, password }
     ) => {
-      const searchedUser = await client.user.findFirst({
-        where: {
-          OR: [{ username: username }, { firstname: firstname }],
-        },
-      });
-      const uglyPassword = await bcrypt.hash(password, 10);
-      return client.user.create({
-        data: {
-          firstname,
-          lastname,
-          username,
-          email,
-          password: uglyPassword,
-        },
-      });
+      try {
+        const searchedUser = await client.user.findFirst({
+          where: {
+            OR: [{ username: username }, { firstname: firstname }],
+          },
+        });
+        if (searchedUser) {
+          throw new Error("username or firstname is already taken");
+        }
+        const uglyPassword = await bcrypt.hash(password, 10);
+        return client.user.create({
+          data: {
+            firstname,
+            lastname,
+            username,
+            email,
+            password: uglyPassword,
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
       // return selected profile
     },
   },
