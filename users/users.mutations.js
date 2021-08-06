@@ -27,7 +27,7 @@ export default {
           },
         });
       } catch (error) {
-        console.log(error);
+        return error;
       }
       // return selected profile
     },
