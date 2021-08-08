@@ -31,11 +31,11 @@ export default {
       }
       const token = jwt.sign({ id: user.id }, SECRET);
       console.log(token);
+      // if password correct -> return token
       return {
         ok: true,
         token: token,
       };
-      // if password correct -> return token
     },
   },
 };
